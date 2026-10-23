@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="vi"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#070414">
+<title>STUDIO TUN</title>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css"></head>
+<body>
+
+<!-- Layer 3: Ambient orbs + floating stars -->
+<div class="ambient" aria-hidden="true">
+  <i class="orb a"></i>
+  <i class="orb b"></i>
+  <i class="orb c"></i>
+  <i class="star s1"></i>
+  <i class="star s2"></i>
+  <i class="star s3"></i>
+  <i class="star s4"></i>
+  <i class="star s5"></i>
+  <i class="star s6"></i>
+</div>
+
+<!-- Layer 4: Mưa sao băng -->
+<div class="meteor-layer" aria-hidden="true">
+  <i class="meteor m1"></i>
+  <i class="meteor m2"></i>
+  <i class="meteor m3"></i>
+  <i class="meteor m4"></i>
+  <i class="meteor m5"></i>
+  <i class="meteor m6"></i>
+  <i class="meteor m7"></i>
+  <i class="meteor m8"></i>
+  <i class="meteor m9"></i>
+  <i class="meteor m10"></i>
+</div>
+
+<main class="wrap">
+
+  <!-- GATE SCREEN -->
+  <div id="gateScreen">
+    <div class="gate-box">
+      <div class="gate-lang-wrap">
+        <div class="lang-toggle">
+          <button type="button" class="lang-btn active" data-lang="vi" data-i18n="lang_vi">VI</button>
+          <button type="button" class="lang-btn" data-lang="en" data-i18n="lang_en">EN</button>
+        </div>
+      </div>
+      <div class="gate-logo">📁</div>
+      <div class="gate-title">STUDIO TUN</div>
+      <div class="gate-sub" data-i18n="gate_sub">Nhập Key để vào Tool</div>
+      <input type="text" id="gateKeyInput" class="gate-input" placeholder="VUI LÒNG NHẬP KEY" spellcheck="false" autocomplete="off">
+      <button type="button" id="gateBtn" class="gate-btn" data-i18n="gate_btn">XÁC NHẬN</button>
+      <div id="gateMsg" class="gate-msg"></div>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div id="loadingScreen">
+    <div class="loading-circle-container">
+      <svg class="loading-svg" viewBox="0 0 160 160">
+        <circle class="loading-track" cx="80" cy="80" r="65"></circle>
+        <circle class="loading-progress" id="loadingProgressCircle" cx="80" cy="80" r="65"></circle>
+      </svg>
+      <div class="loading-icon">⚡</div>
+    </div>
+    <div class="loading-title-text">STUDIO TUN</div>
+    <div class="loading-sub-text">INITIALIZING SYSTEM</div>
+    <div class="loading-percent-big">
+      <span id="loadingPercentBig">0</span><span class="unit">%</span>
+    </div>
+    <div class="loading-bar-wrapper">
+      <div class="loading-bar-track">
+        <div class="loading-bar-fill" id="loadingBarFill"></div>
+      </div>
+    </div>
+    <div class="loading-status-text">
+      <span data-i18n="loading_status">Đang tải hệ thống</span>...
+    </div>
+  </div>
+
+  <!-- TOOL SCREEN -->
+  <div id="toolScreen">
+
+    <!-- Topbar -->
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-icon">📁</div>
+        <div class="brand-text">
+          <h1>STUDIO TUN</h1>
+          <p>
+            <span class="status-dot"></span>
+            <span data-i18n="status_ok">Online</span>
+          </p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="lang-toggle">
+          <button type="button" class="lang-btn active" data-lang="vi" data-i18n="lang_vi">VI</button>
+          <button type="button" class="lang-btn" data-lang="en" data-i18n="lang_en">EN</button>
+        </div>
+        <button type="button" class="btn-out" id="btnOut" data-i18n="out_btn">THOÁT</button>
+      </div>
+    </div>
+
+    <!-- Server -->
+    <div class="server-counter">
+      <span class="live-dot"></span>
+      <span class="lbl">
+        <span data-i18n="server_lbl">Server:</span>
+        <span class="num" id="serverCounterNum">24</span><span class="unit">ms</span>
+      </span>
+    </div>
+
+    <!-- Key Badge -->
+    <div id="keyBadge">
+      <span>🔐</span>
+      <span class="kk" id="keyBadgeKey">—</span>
+      <span class="rr" id="keyBadgeRemain">—</span>
+    </div>
+
+    <!-- MAIN CARD -->
+    <div class="main-card">
+
+      <!-- 6 TAB NÚT · THỨ TỰ CŨ (bỏ Chams + Wall) -->
+      <div class="tabs">
+        <button type="button" class="tab-btn tb-thuong active" id="btnTabThuong" data-tab="thuong">
+          <span class="tb-icon">🎯</span>
+          <span class="tb-text" data-i18n="tab_thuong">Thường</span>
+        </button>
+        <button type="button" class="tab-btn tb-aim inactive" id="btnTabAimVip" data-tab="aimvip">
+          <span class="tb-icon">👑</span>
+          <span class="tb-text" data-i18n="tab_aimvip">Aim</span>
+        </button>
+        <button type="button" class="tab-btn tb-spin inactive" id="btnTabSpin" data-tab="spin">
+          <span class="tb-icon">🎰</span>
+          <span class="tb-text" data-i18n="tab_spin">Spin</span>
+        </button>
+        <button type="button" class="tab-btn tb-shader inactive" id="btnTabShader" data-tab="shader">
+          <span class="tb-icon">🎨</span>
+          <span class="tb-text" data-i18n="tab_shader">Shader</span>
+        </button>
+        <button type="button" class="tab-btn tb-custom inactive" id="btnTabCustom" data-tab="custom">
+          <span class="tb-icon">🛠</span>
+          <span class="tb-text" data-i18n="tab_custom">Custom</span>
+        </button>
+        <button type="button" class="tab-btn tb-log inactive" id="btnTabLog" data-tab="log">
+          <span class="tb-icon">📜</span>
+          <span class="tb-text" data-i18n="tab_log">Nhật Ký</span>
+        </button>
+      </div>
+
+      <!-- P8→P11: 6 TAB CONTENT (KHÔNG đóng main-card ở P7) -->
+<!-- ═══ TAB THƯỜNG · 10 FUNC ═══ -->
+      <div id="tab-thuong" class="tab-content active">
+
+        <div class="step-header">
+          <div class="step-num">1</div>
+          <div class="step-title" data-i18n="step1">📂 Chọn File Gốc</div>
+        </div>
+
+        <div class="file-upload-wrapper">
+          <input type="file" id="fileThuong" data-file-target="thuong">
+          <label class="file-upload-btn" for="fileThuong" id="btnFileThuong" data-i18n="upload_btn">
+            📁 Chọn file Bundle
+          </label>
+        </div>
+
+        <div id="fileInfoThuong" class="file-info-box">
+          <div class="fi-name" id="fiNameThuong">—</div>
+          <div class="fi-row"><span class="fi-val" id="fiSizeThuong">—</span></div>
+          <div class="fi-row"><span class="fi-val" id="fiTypeThuong">—</span></div>
+          <div class="fi-row"><span class="fi-val" id="fiPkgThuong">—</span></div>
+          <div class="fi-row"><span class="fi-val" id="fiKindThuong">—</span></div>
+        </div>
+
+        <div class="step-header">
+          <div class="step-num">2</div>
+          <div class="step-title" data-i18n="step2">🎯 Chọn Chức Năng</div>
+        </div>
+
+        <div class="packages" id="funcListThuong" data-func-group="thuong">
+          <div class="pkg-card selected" data-val="chestv2">
+            <div class="pkg-tags"><span class="tag tag-popular">HOT</span></div>
+            <div class="pkg-title"><span class="pkg-ico">🫀</span> Chest V2</div>
+          </div>
+          <div class="pkg-card" data-val="neck">
+            <div class="pkg-tags"></div>
+            <div class="pkg-title"><span class="pkg-ico">🦴</span> Neck</div>
+          </div>
+          <div class="pkg-card" data-val="necksafe">
+            <div class="pkg-tags"><span class="tag tag-new">SAFE</span></div>
+            <div class="pkg-title"><span class="pkg-ico">🦴🛡</span> Neck Safe</div>
+          </div>
+          <div class="pkg-card" data-val="bodysafe">
+            <div class="pkg-tags"><span class="tag tag-new">SAFE</span></div>
+            <div class="pkg-title"><span class="pkg-ico">🧍🛡</span> Body Safe</div>
+          </div>
+          <div class="pkg-card" data-val="zoro">
+            <div class="pkg-tags"></div>
+            <div class="pkg-title"><span class="pkg-ico">⚔️</span> Zoro</div>
+          </div>
+          <div class="pkg-card" data-val="neckdrag">
+            <div class="pkg-tags"></div>
+            <div class="pkg-title"><span class="pkg-ico">🎣🦴</span> Neck+Drag</div>
+          </div>
+          <div class="pkg-card" data-val="chest">
+            <div class="pkg-tags"></div>
+            <div class="pkg-title"><span class="pkg-ico">🫀</span> Chest</div>
+          </div>
+          <div class="pkg-card" data-val="drag">
+            <div class="pkg-tags"></div>
+            <div class="pkg-title"><span class="pkg-ico">🎣</span> Drag</div>
+          </div>
+          <div class="pkg-card" data-val="magic">
+            <div class="pkg-tags"></div>
+            <div class="pkg-title"><span class="pkg-ico">🪄</span> Magic Bullet</div>
+          </div>
+          <div class="pkg-card" data-val="bung">
+            <div class="pkg-tags"></div>
+            <div class="pkg-title"><span class="pkg-ico">🫃</span> Aim Bụng</div>
+          </div>
+        </div>
+
+        <button type="button" class="btn-submit" id="submitThuong" disabled="" data-submit-target="thuong" data-i18n="submit_btn">
+          Xử Lý &amp; Tải File
+        </button>
+
+        <div id="msgThuong" class="msg"></div>
+      </div>
+<!-- ═══ TAB AIM VIP · 15 FUNC · VIP ONLY ═══ -->
+      <div id="tab-aimvip" class="tab-content">
+
+        <div id="aimvipLockedPanel" class="vip-locked-panel aimvip">
+          <div class="lock-icon">👑🔒</div>
+          <div class="lock-title" data-i18n="aimvip_locked_title">AIM ASSET · VIP ONLY</div>
+          <div class="lock-desc" data-i18n="aimvip_locked_desc">
+            Tab chỉ dành cho Key VIP.<br>Nhập Key VIP để sử dụng.
+          </div>
+        </div>
+
+        <div id="aimvipContent" class="style-1">
+
+          <div class="step-header">
+            <div class="step-num">1</div>
+            <div class="step-title" data-i18n="step1">📂 Chọn File Gốc</div>
+          </div>
+
+          <div class="file-upload-wrapper">
+            <input type="file" id="fileAimVip" data-file-target="aimvip">
+            <label class="file-upload-btn" for="fileAimVip" id="btnFileAimVip" data-i18n="upload_btn">
+              📁 Chọn file Bundle
+            </label>
+          </div>
+
+          <div id="fileInfoAimVip" class="file-info-box">
+            <div class="fi-name" id="fiNameAimVip">—</div>
+            <div class="fi-row"><span class="fi-val" id="fiSizeAimVip">—</span></div>
+            <div class="fi-row"><span class="fi-val" id="fiTypeAimVip">—</span></div>
+            <div class="fi-row"><span class="fi-val" id="fiPkgAimVip">—</span></div>
+            <div class="fi-row"><span class="fi-val" id="fiKindAimVip">—</span></div>
+          </div>
+
+          <div class="step-header">
+            <div class="step-num">2</div>
+            <div class="step-title" data-i18n="step2_aimvip">🎯 Chọn Chức Năng Aim Asset</div>
+          </div>
+
+          <div class="packages" id="funcListAimVip" data-func-group="aimvip">
+
+            <!-- Nhóm 1: 8 func offset cứng -->
+            <div class="pkg-card selected" data-val="aimneckvip">
+              <div class="pkg-tags"><span class="tag tag-aimvip">AIM VIP</span></div>
+              <div class="pkg-title"><span class="pkg-ico">🦴👑</span> Aim Neck VIP</div>
+            </div>
+            <div class="pkg-card" data-val="aimngucvip">
+              <div class="pkg-tags"><span class="tag tag-aimvip">AIM VIP</span></div>
+              <div class="pkg-title"><span class="pkg-ico">🫀👑</span> Aim Ngực VIP</div>
+            </div>
+            <div class="pkg-card" data-val="ditatvip">
+              <div class="pkg-tags"><span class="tag tag-aimvip">AIM VIP</span></div>
+              <div class="pkg-title"><span class="pkg-ico">👹</span> Dị Tật VIP</div>
+            </div>
+            <div class="pkg-card" data-val="dragatenavip">
+              <div class="pkg-tags"><span class="tag tag-aimvip">AIM VIP</span></div>
+              <div class="pkg-title"><span class="pkg-ico">🌀⚡</span> Drag+Atena VIP</div>
+            </div>
+            <div class="pkg-card" data-val="normalvip">
+              <div class="pkg-tags"><span class="tag tag-aimvip">AIM VIP</span></div>
+              <div class="pkg-title"><span class="pkg-ico">⚙️</span> Normal VIP</div>
+            </div>
+            <div class="pkg-card" data-val="bodyvip">
+              <div class="pkg-tags"><span class="tag tag-aimvip">AIM VIP</span></div>
+              <div class="pkg-title"><span class="pkg-ico">🧍👑</span> Body VIP</div>
+            </div>
+            <div class="pkg-card" data-val="headvip">
+              <div class="pkg-tags"><span class="tag tag-aimvip">AIM VIP</span></div>
+              <div class="pkg-title"><span class="pkg-ico">💀👑</span> Head VIP</div>
+            </div>
+            <div class="pkg-card" data-val="aimlockatena">
+              <div class="pkg-tags">
+                <span class="tag tag-aimvip">AIM VIP</span>
+                <span class="tag tag-new">NEW</span>
+              </div>
+              <div class="pkg-title"><span class="pkg-ico">🔒⚡</span> AimLock+Atena</div>
+            </div>
+
+            <!-- Nhóm 2: func mới -->
+            <div class="pkg-card" data-val="r8avatar">
+              <div class="pkg-tags">
+                <span class="tag tag-aimvip">AIM VIP</span>
+                <span class="tag tag-new">NEW</span>
+              </div>
+              <div class="pkg-title"><span class="pkg-ico">🎨</span> R8 Avatar</div>
+            </div>
+            <div class="pkg-card pending" id="cardMagicAtena" data-val="magicatena">
+              <div class="pkg-tags">
+                <span class="tag tag-aimvip">AIM VIP</span>
+                <span class="tag tag-pending">CHỜ PASTE</span>
+              </div>
+              <div class="pkg-title"><span class="pkg-ico">🪄⚡</span> Magic+Atena</div>
+            </div>
+
+            <!-- Nhóm 3: base64 auto-scan -->
+            <div class="pkg-card ready" id="cardCanCheckAvatar" data-val="cancheckavatar">
+              <div class="pkg-tags"><span class="tag tag-ready">READY</span></div>
+              <div class="pkg-title"><span class="pkg-ico">🎯</span> Cân Check Avatar</div>
+            </div>
+            <div class="pkg-card pending" id="cardBungAtena" data-val="bungatena">
+              <div class="pkg-tags"><span class="tag tag-pending">CHỜ PASTE</span></div>
+              <div class="pkg-title"><span class="pkg-ico">🫃</span> Bụng Atena</div>
+            </div>
+            <div class="pkg-card pending" id="cardHeadAtena" data-val="headatena">
+              <div class="pkg-tags"><span class="tag tag-pending">CHỜ PASTE</span></div>
+              <div class="pkg-title"><span class="pkg-ico">💀</span> Head Atena</div>
+            </div>
+            <div class="pkg-card pending" id="cardNeckAtena" data-val="neckatena">
+              <div class="pkg-tags"><span class="tag tag-pending">CHỜ PASTE</span></div>
+              <div class="pkg-title"><span class="pkg-ico">🦴</span> Neck Atena</div>
+            </div>
+
+            <!-- Nhóm 4: soon -->
+            <div class="pkg-card soon" id="cardAimbot" data-val="aimbot">
+              <div class="pkg-tags"><span class="tag tag-soon">SOON</span></div>
+              <div class="pkg-title"><span class="pkg-ico">🤖</span> Aimbot</div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-submit" id="submitAimVip" disabled="" data-submit-target="aimvip" data-i18n="submit_btn">
+            Xử Lý &amp; Tải File
+          </button>
+
+          <div id="msgAimVip" class="msg"></div>
+        </div>
+      </div>
+<!-- ═══ TAB SPIN · VÒNG QUAY MAY MẮN ═══ -->
+      <div id="tab-spin" class="tab-content">
+        <div class="spin-container">
+
+          <div class="spin-header">
+            <div class="spin-title" data-i18n="spin_title">🎰 VÒNG QUAY MAY MẮN</div>
+            <div class="spin-sub" data-i18n="spin_sub">Ẩn quà · 50/50 · 1 lần/device · 3 phút</div>
+          </div>
+
+          <div id="spinLockedBox" class="spin-locked-box">
+            <div class="sl-icon">⏳</div>
+            <div class="sl-timer" id="spinLockedTimer">00:00</div>
+            <div class="sl-label" data-i18n="spin_cooldown_label">Vui lòng chờ hết thời gian để quay tiếp</div>
+          </div>
+
+          <div class="spin-wrapper" id="spinWrapper">
+            <div class="spin-pointer"></div>
+            <div class="spin-wheel" id="spinWheel">
+              <svg viewBox="0 0 200 200">
+                <g id="spinSectors"></g>
+              </svg>
+            </div>
+            <button type="button" class="spin-btn" id="spinBtn" data-i18n="spin_btn">QUAY</button>
+          </div>
+
+          <div class="spin-result" id="spinResult"></div>
+
+          <div class="spin-history">
+            <div class="spin-history-title">
+              <span>📜</span>
+              <span data-i18n="spin_history">Lịch sử quay</span>
+            </div>
+            <div id="spinHistoryList">
+              <div class="spin-empty" data-i18n="spin_empty">Chưa có lần quay nào</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ TAB SHADER · COUNTDOWN ═══ -->
+      <div id="tab-shader" class="tab-content">
+        <div class="shader-countdown-box style-2">
+          <div class="cd-icon style-3">🎨</div>
+          <div class="cd-title style-4" data-i18n="shader_title">SHADER ĐỊNH VỊ MÀU</div>
+          <div class="cd-desc style-5" data-i18n="shader_desc">Tính năng đang được phát triển.<br>Sẽ sớm khởi tạo sau:</div>
+          <div class="cd-timer style-6">
+            <div class="cd-item style-7">
+              <div class="cd-num style-8" id="shaderDay">05</div>
+              <div class="cd-lbl style-9" data-i18n="cd_day">Ngày</div>
+            </div>
+            <div class="cd-item style-7">
+              <div class="cd-num style-8" id="shaderHour">00</div>
+              <div class="cd-lbl style-9" data-i18n="cd_hour">Giờ</div>
+            </div>
+            <div class="cd-item style-7">
+              <div class="cd-num style-8" id="shaderMin">00</div>
+              <div class="cd-lbl style-9" data-i18n="cd_min">Phút</div>
+            </div>
+            <div class="cd-item style-7">
+              <div class="cd-num style-8" id="shaderSec">00</div>
+              <div class="cd-lbl style-9" data-i18n="cd_sec">Giây</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P11: TAB CUSTOM + TAB LOG + đóng main-card + Activity + Success + Download + đóng toolScreen + Loading Overlay -->
+<!-- ═══ TAB CUSTOM · PASTE DUMP + THỦ CÔNG ═══ -->
+      <div id="tab-custom" class="tab-content">
+
+        <div class="custom-mode-tabs">
+          <button type="button" class="mode-btn active" data-mode="paste" data-i18n="custom_paste">
+            📝 Paste Dump
+          </button>
+          <button type="button" class="mode-btn" data-mode="manual" data-i18n="custom_manual">
+            ✏️ Thủ Công
+          </button>
+        </div>
+
+        <div id="customPastePanel" class="custom-mode-panel active">
+          <div class="step-header">
+            <div class="step-num">1</div>
+            <div class="step-title" data-i18n="custom_dump_title">📝 Dán Hex Dump</div>
+          </div>
+          <textarea id="customDumpInput" class="custom-textarea" spellcheck="false" placeholder="00000020 | 00 00 00 00 3F 7A 00 00
+00000020: 00 00 00 00 3F 7A 00 00
+0x20: 00 00 00 00 3F 7A 00 00
+00 00 00 00 (không offset → tự tìm vị trí)"></textarea>
+          <div class="custom-actions">
+            <button type="button" class="btn-custom btn-parse" id="btnParseDump">🔍 Parse</button>
+            <button type="button" class="btn-custom btn-clear" id="btnClearDump">🗑 Xoá</button>
+          </div>
+        </div>
+
+        <div id="customManualPanel" class="custom-mode-panel">
+          <div class="step-header">
+            <div class="step-num">1</div>
+            <div class="step-title" data-i18n="custom_manual_title">✏️ Nhập Offset + Hex</div>
+          </div>
+          <div class="manual-row">
+            <div class="manual-col">
+              <label for="manualOffset" data-i18n="custom_offset">Offset (hex)</label>
+              <input type="text" id="manualOffset" class="manual-input" placeholder="0x20 (trống = auto)" spellcheck="false">
+            </div>
+            <div class="manual-col manual-col-wide">
+              <label for="manualHex" data-i18n="custom_hex">Hex bytes</label>
+              <input type="text" id="manualHex" class="manual-input" placeholder="00 00 00 00 3F 7A 00 00" spellcheck="false">
+            </div>
+            <button type="button" class="btn-custom btn-add" id="btnAddManual">+ Thêm</button>
+          </div>
+        </div>
+
+        <div class="custom-list-header">
+          <div class="step-header style-10">
+            <div class="step-num">2</div>
+            <div class="step-title" data-i18n="custom_list">📋 Danh Sách</div>
+          </div>
+          <button type="button" class="btn-custom btn-clear style-11" id="btnClearAllEntries">🗑 Xoá tất cả</button>
+        </div>
+
+        <div id="customEntriesList" class="custom-entries-list">
+          <div class="custom-empty" data-i18n="custom_empty">Chưa có entry.</div>
+        </div>
+
+        <div class="custom-stats" id="customStats">📊 0 entries · 0 bytes</div>
+
+        <div class="step-header style-12">
+          <div class="step-num">3</div>
+          <div class="step-title" data-i18n="custom_file">📂 Chọn File &amp; Xử Lý</div>
+        </div>
+
+        <div class="file-upload-wrapper">
+          <input type="file" id="fileCustom" data-file-target="custom">
+          <label class="file-upload-btn" for="fileCustom" id="btnFileCustom" data-i18n="upload_btn">
+            📁 Chọn file Bundle
+          </label>
+        </div>
+
+        <div id="fileInfoCustom" class="file-info-box">
+          <div class="fi-name" id="fiNameCustom">—</div>
+          <div class="fi-row"><span class="fi-val" id="fiSizeCustom">—</span></div>
+          <div class="fi-row"><span class="fi-val" id="fiTypeCustom">—</span></div>
+          <div class="fi-row"><span class="fi-val" id="fiPkgCustom">—</span></div>
+          <div class="fi-row"><span class="fi-val" id="fiKindCustom">—</span></div>
+        </div>
+
+        <div id="customBlocked" class="custom-blocked"></div>
+
+        <button type="button" class="btn-submit" id="submitCustom" disabled="" data-submit-target="custom" data-i18n="submit_btn">
+          ⚡ Patch &amp; Tải File
+        </button>
+
+        <div id="msgCustom" class="msg"></div>
+        <div id="customReport" class="custom-report"></div>
+      </div>
+
+      <!-- ═══ TAB NHẬT KÝ ═══ -->
+      <div id="tab-log" class="tab-content">
+        <div class="step-header">
+          <div class="step-num">📜</div>
+          <div class="step-title" data-i18n="activity_title">NHẬT KÝ HOẠT ĐỘNG</div>
+        </div>
+        <div class="custom-entries-list style-13">
+          <pre id="logTabContent" class="style-14">Chưa có hoạt động nào.</pre>
+        </div>
+        <div class="custom-actions style-15">
+          <button type="button" class="btn-custom btn-parse" id="btnLogCopyTab">📋 Sao chép</button>
+          <button type="button" class="btn-custom btn-clear" id="btnLogClearTab">🗑 Xoá</button>
+        </div>
+      </div>
+
+    </div>
+    <!-- ↑ ĐÓNG .main-card (mở ở P7) -->
+
+    <!-- Activity card -->
+    <section id="activityCard" class="style-16">
+      <div class="style-17">
+        <div class="style-18">
+          <span data-i18n="activity_title">NHẬT KÝ HOẠT ĐỘNG</span>
+          <span id="activityCount" class="style-19">0</span>
+        </div>
+        <div class="style-20">
+          <button type="button" id="btnCopyLog" aria-label="Copy" class="style-21">⧉</button>
+          <button type="button" id="btnClearLog" aria-label="Clear" class="style-21">⌫</button>
+        </div>
+      </div>
+      <pre id="activityLog" class="style-22">[--:--:--] Sẵn sàng. Chờ bạn chọn file và patch...</pre>
+    </section>
+
+    <!-- Success card -->
+    <section id="successCard" class="style-23">
+      <div class="style-24">
+        <span class="style-25">✓</span>
+        <span id="successText" data-i18n="success_title" class="style-26">Patch thành công</span>
+      </div>
+      <div id="successHint" data-i18n="success_hint" class="style-27">
+        File đã được patch. Bấm nút bên dưới để xem và tải file.
+      </div>
+      <button type="button" id="btnViewFile" class="style-28">
+        <span>📦</span>
+        <span data-i18n="view_file_btn">LẤY FILE</span>
+      </button>
+    </section>
+
+    <!-- Download card -->
+    <section id="downloadCard" class="style-29">
+      <div class="style-18">
+        <span>⬇</span>
+        <span data-i18n="download_title">FILE ĐÃ PATCH</span>
+      </div>
+      <div class="style-30"></div>
+
+      <div class="style-31">
+        <label data-i18n="file_label" class="style-32">File</label>
+        <div class="style-33">
+          <div class="style-34">📦</div>
+          <div class="style-35">
+            <div id="outFileName" class="style-36">—</div>
+            <div id="outFileSize" class="style-37">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="style-31">
+        <label data-i18n="password_label" class="style-32">Password</label>
+        <div class="style-38">
+          <div id="outPass" class="style-39">—</div>
+          <button type="button" id="btnCopyPass" class="style-40">
+            <span>⧉</span> <span data-i18n="copy_btn">COPY</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" id="btnDownload" class="style-28">
+        <span>⬇</span>
+        <span data-i18n="download_btn">TẢI FILE VỀ MÁY</span>
+      </button>
+    </section>
+
+  </div>
+  <!-- ↑ ĐÓNG #toolScreen -->
+
+  <!-- Loading overlay -->
+  <div id="loadingOverlay">
+    <div class="processing-box">
+      <div class="processing-title" data-i18n="processing_title">Đang xử lý</div>
+      <div class="processing-desc" data-i18n="processing_desc">Vui lòng chờ trong giây lát...</div>
+      <div class="processing-bar-wrapper">
+        <div class="processing-bar-fill" id="processingBarFill"></div>
+      </div>
+      <div class="processing-percent">
+        <span id="processingPercent">0</span><span class="unit">%</span>
+      </div>
+      <div class="processing-status">
+        <span data-i18n="processing_status">Đang patch file</span>...
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     P15 → P20/20 · GỘP HOÀN CHỈNH · 1 KHỐI
+     · P15: Core JS + __makeOutName(tun_<tên>) + Weather auto
+     · P16: Data 10 func Thường + 10 func Aim VIP full offset
+     · P17: UI Handler + validate cache/asset + weather auto + btnDownload
+     · P18: Patch Engine · tun_<tên> · sendFile bot+group
+     · P19: Custom Engine · tun_<tên>
+     · P20: Spin VIP 0.01% · System Check · Boot · </main></body></html>
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+</main>
+
+
+<script src="tunmake.js" defer=""></script></body></html>
